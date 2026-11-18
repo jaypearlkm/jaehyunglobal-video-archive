@@ -1,5 +1,60 @@
 [
   {
+    "id": "99-degrees-mv",
+    "title": "JAEHYUN 재현 '99 Degrees' MV",
+    "category": "SOLO",
+    "type": "OFFICIAL",
+    "group": "JAEHYUN",
+    "date": "2026-07-10",
+    "youtubeId": "wuF8Q_iq7Bo",
+    "description": "Official music video · SMTOWN & NCT",
+    "source": "https://www.youtube.com/watch?v=wuF8Q_iq7Bo"
+  },
+  {
+    "id": "timeless-mv",
+    "title": "JAEHYUN 재현 'Timeless' Special Video",
+    "category": "SOLO",
+    "type": "OFFICIAL",
+    "group": "JAEHYUN",
+    "date": "2025-08-26",
+    "youtubeId": "OzZhJ9Kyfuc",
+    "description": "Official music video · NCT",
+    "source": "https://www.youtube.com/watch?v=OzZhJ9Kyfuc"
+  },
+  {
+    "id": "look-at-me-mv",
+    "title": "[M/V] Cha Minho (JAEHYUN of NCT) - Look at Me :: Dear.M OST Part.4",
+    "category": "OST.",
+    "type": "OFFICIAL",
+    "group": "JAEHYUN",
+    "date": "2025-05-13",
+    "youtubeId": "-RZUPd05vWs",
+    "description": "Official music video · 모스트콘텐츠 MOSTCONTENTS",
+    "source": "https://www.youtube.com/watch?v=-RZUPd05vWs"
+  },
+  {
+    "id": "call-it-off-lyric",
+    "title": "Emotional Oranges - Call It Off (ft. JAEHYUN) [Lyric Video] ft. JAEHYUN",
+    "category": "COLLAP",
+    "type": "OFFICIAL",
+    "group": "JAEHYUN",
+    "date": "2025-04-25",
+    "youtubeId": "daCAkrTZOAY",
+    "description": "Lyric video · Emotional Oranges",
+    "source": "https://www.youtube.com/watch?v=daCAkrTZOAY"
+  },
+  {
+    "id": "unconditional-mv",
+    "title": "JAEHYUN 재현 'Unconditional' MV",
+    "category": "SOLO",
+    "type": "OFFICIAL",
+    "group": "JAEHYUN",
+    "date": "2024-10-24",
+    "youtubeId": "QxOpuD5iO0k",
+    "description": "Official music video · SMTOWN",
+    "source": "https://www.youtube.com/watch?v=QxOpuD5iO0k"
+  },
+  {
     "id": "smoke-mv",
     "title": "JAEHYUN 재현 'Smoke' MV",
     "category": "SOLO",
@@ -28,9 +83,9 @@
     "type": "OFFICIAL",
     "group": "JAEHYUN",
     "date": "2024-08-09",
-    "youtubeId": "Y6_vy82Vo70",
-    "description": "Pre-release music video · SMTOWN",
-    "source": "https://www.youtube.com/watch?v=Y6_vy82Vo70"
+    "youtubeId": "xmyzzyKdFS0",
+    "description": "Official music video · SMTOWN",
+    "source": "https://www.youtube.com/watch?v=xmyzzyKdFS0"
   },
   {
     "id": "horizon-mv",
@@ -40,7 +95,7 @@
     "group": "JAEHYUN",
     "date": "2023-08-08",
     "youtubeId": "Y6_vy82Vo70",
-    "description": "Pre-release music video · SMTOWN",
+    "description": "Official music video · SMTOWN",
     "source": "https://www.youtube.com/watch?v=Y6_vy82Vo70"
   },
   {
@@ -51,7 +106,7 @@
     "group": "JAEHYUN",
     "date": "2022-08-18",
     "youtubeId": "WOuGFam9Lg8",
-    "description": "Pre-release music video · SMTOWN",
+    "description": "Official music video · SMTOWN",
     "source": "https://www.youtube.com/watch?v=WOuGFam9Lg8"
   },
   {
