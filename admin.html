@@ -1,13 +1,353 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Archive Manager</title><style>
-body{font:14px Arial,sans-serif;background:#f4efe6;color:#28231f;margin:0;padding:24px}main{max-width:850px;margin:auto}h1{font-size:28px}p{color:#786e62;line-height:1.6}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}input,select,textarea{width:100%;box-sizing:border-box;padding:10px;border:1px solid #786e62;background:#fffaf2;margin:5px 0 12px;font:inherit}label{font-size:12px;font-weight:bold}button{padding:10px 14px;border:1px solid #28231f;background:#b78b62;color:white;font-weight:bold;cursor:pointer;margin:4px 4px 4px 0}.item{background:#e7ddce;padding:12px;margin:10px 0;border:1px solid #28231f;display:flex;justify-content:space-between;gap:10px}.item button{background:#28231f}.note{background:#fffaf2;padding:14px;border-left:4px solid #b78b62;margin:16px 0}@media(max-width:600px){.row{grid-template-columns:1fr}}
-</style></head><body><main><h1>JAEHYUN GLOBAL · ARCHIVE MANAGER</h1><p>Add and edit video entries, then export the updated <b>videos.json</b> file. Replace the existing file in your GitHub repository to publish your changes.</p><div class="note"><b>Important:</b> This is a browser-based content editor. It does not publish directly to the live website or save changes for other visitors. Export the JSON and upload/commit it to GitHub to update the public archive.</div>
-<h2>Video details</h2><form id="form"><input type="hidden" id="id"><div class="row"><div><label>VIDEO TITLE</label><input id="title" required></div><div><label>YOUTUBE VIDEO ID</label><input id="youtubeId" placeholder="e.g. lJGCD3H9xcg" required></div></div><div class="row"><div><label>CATEGORY</label><select id="category"><option>SOLO</option><option>NCT 127</option><option>NCT U</option><option>NCT DOJAEJUNG</option><option>VARIETY</option><option>BEHIND</option></select></div><div><label>TYPE</label><select id="type"><option>OFFICIAL</option><option>FANCAM</option><option>PERFORMANCE</option><option>MUSIC SHOW</option><option>SHORTS</option></select></div></div><div class="row"><div><label>DATE</label><input id="date" type="date"></div><div><label>DESCRIPTION / SOURCE</label><input id="description"></div></div><button type="submit">SAVE VIDEO</button><button type="button" id="reset">CLEAR FORM</button></form><h2>Current videos</h2><div id="list"></div><button id="export">DOWNLOAD videos.json</button><button id="import">IMPORT videos.json</button><input type="file" id="file" accept=".json,application/json" hidden></main><script>
-let items=[];const $=id=>document.getElementById(id);function draw(){$("list").innerHTML=items.map((v,i)=>`<div class="item"><span><b>${v.title}</b><br><small>${v.category} · ${v.type} · ${v.youtubeId}</small></span><span><button onclick="edit(${i})">EDIT</button><button onclick="removeItem(${i})">DELETE</button></span></div>`).join("")||"No videos yet."}
-function reset(){$("form").reset();$("id").value=""}
-window.edit=i=>{const v=items[i];["id","title","youtubeId","category","type","date","description"].forEach(k=>$(k).value=k==="id"?v.id||"":v[k]||"");window.scrollTo({top:0,behavior:"smooth"})};
-window.removeItem=i=>{if(confirm("Delete this video?")){items.splice(i,1);draw()}};
-$("form").onsubmit=e=>{e.preventDefault();const v={id:$("id").value||$("youtubeId").value,title:$("title").value,youtubeId:$("youtubeId").value.trim(),category:$("category").value,type:$("type").value,date:$("date").value,description:$("description").value,source:"https://www.youtube.com/watch?v="+$("youtubeId").value.trim()};const i=items.findIndex(x=>x.id===v.id);if(i>=0)items[i]=v;else items.push(v);reset();draw()};
-$("reset").onclick=reset;$("export").onclick=()=>{const a=document.createElement("a"),blob=new Blob([JSON.stringify(items,null,2)],{type:"application/json"});a.href=URL.createObjectURL(blob);a.download="videos.json";a.click();URL.revokeObjectURL(a.href)};
-$("import").onclick=()=>$("file").click();$("file").onchange=async e=>{try{items=JSON.parse(await e.target.files[0].text());draw()}catch{alert("Invalid JSON file")}};
-fetch("./videos.json").then(r=>r.json()).then(d=>{items=d;draw()}).catch(()=>draw());
-</script></body></html>
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <title>Archive Manager</title>
+
+  <style>
+    body {
+      font: 14px Arial, sans-serif;
+      background: #f4efe6;
+      color: #28231f;
+      margin: 0;
+      padding: 24px;
+    }
+
+    main {
+      max-width: 850px;
+      margin: auto;
+    }
+
+    h1 {
+      font-size: 28px;
+    }
+
+    p {
+      color: #786e62;
+      line-height: 1.6;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px;
+      border: 1px solid #786e62;
+      background: #fffaf2;
+      margin: 5px 0 12px;
+      font: inherit;
+    }
+
+    label {
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    button {
+      padding: 10px 14px;
+      border: 1px solid #28231f;
+      background: #b78b62;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 4px 4px 4px 0;
+    }
+
+    .item {
+      background: #e7ddce;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #28231f;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .item button {
+      background: #28231f;
+    }
+
+    .note {
+      background: #fffaf2;
+      padding: 14px;
+      border-left: 4px solid #b78b62;
+      margin: 16px 0;
+    }
+
+    @media (max-width: 600px) {
+      .row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main>
+
+    <h1>JAEHYUN GLOBAL · ARCHIVE MANAGER</h1>
+
+    <p>
+      Add and edit video entries, then export the updated
+      <b>videos.json</b> file. Replace the existing file in your
+      GitHub repository to publish your changes.
+    </p>
+
+    <div class="note">
+      <b>Important:</b>
+      This is a browser-based content editor. It does not publish
+      directly to the live website or save changes for other visitors.
+      Export the JSON and upload/commit it to GitHub to update
+      the public archive.
+    </div>
+
+    <h2>Video details</h2>
+
+    <form id="form">
+
+      <input type="hidden" id="id">
+
+      <div class="row">
+
+        <div>
+          <label>VIDEO TITLE</label>
+          <input id="title" required>
+        </div>
+
+        <div>
+          <label>YOUTUBE VIDEO ID</label>
+          <input
+            id="youtubeId"
+            placeholder="e.g. lJGCD3H9xcg"
+            required
+          >
+        </div>
+
+      </div>
+
+      <div class="row">
+
+        <div>
+          <label>CATEGORY</label>
+
+          <select id="category">
+            <option>SOLO</option>
+            <option>NCT 127</option>
+            <option>NCT U</option>
+            <option>NCT DOJAEJUNG</option>
+            <option>VARIETY</option>
+            <option>BEHIND</option>
+          </select>
+        </div>
+
+        <div>
+          <label>TYPE</label>
+
+          <select id="type">
+            <option>OFFICIAL</option>
+            <option>FANCAM</option>
+            <option>PERFORMANCE</option>
+            <option>MUSIC SHOW</option>
+            <option>SHORTS</option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="row">
+
+        <div>
+          <label>DATE</label>
+          <input id="date" type="date">
+        </div>
+
+        <div>
+          <label>DESCRIPTION / SOURCE</label>
+          <input id="description">
+        </div>
+
+      </div>
+
+      <button type="submit">SAVE VIDEO</button>
+
+      <button type="button" id="reset">
+        CLEAR FORM
+      </button>
+
+    </form>
+
+    <h2>Current videos</h2>
+
+    <div id="list"></div>
+
+    <button id="export">
+      DOWNLOAD videos.json
+    </button>
+
+    <button id="import">
+      IMPORT videos.json
+    </button>
+
+    <input
+      type="file"
+      id="file"
+      accept=".json,application/json"
+      hidden
+    >
+
+  </main>
+
+  <script>
+    let items = [];
+
+    const $ = id => document.getElementById(id);
+
+
+    // Display video list
+    function draw() {
+      $("list").innerHTML = items.map((v, i) => `
+        <div class="item">
+
+          <span>
+            <b>${v.title}</b>
+            <br>
+            <small>
+              ${v.category} · ${v.type} · ${v.youtubeId}
+            </small>
+          </span>
+
+          <span>
+            <button onclick="edit(${i})">EDIT</button>
+            <button onclick="removeItem(${i})">DELETE</button>
+          </span>
+
+        </div>
+      `).join("") || "No videos yet.";
+    }
+
+
+    // Clear form
+    function reset() {
+      $("form").reset();
+      $("id").value = "";
+    }
+
+
+    // Edit video
+    window.edit = i => {
+      const v = items[i];
+
+      ["id", "title", "youtubeId", "category", "type", "date", "description"]
+        .forEach(k => {
+          $(k).value = k === "id" ? v.id || "" : v[k] || "";
+        });
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    };
+
+
+    // Delete video
+    window.removeItem = i => {
+      if (confirm("Delete this video?")) {
+        items.splice(i, 1);
+        draw();
+      }
+    };
+
+
+    // Save video
+    $("form").onsubmit = e => {
+      e.preventDefault();
+
+      const v = {
+        id: $("id").value || $("youtubeId").value,
+        title: $("title").value,
+        youtubeId: $("youtubeId").value.trim(),
+        category: $("category").value,
+        type: $("type").value,
+        date: $("date").value,
+        description: $("description").value,
+        source:
+          "https://www.youtube.com/watch?v=" +
+          $("youtubeId").value.trim()
+      };
+
+      const i = items.findIndex(x => x.id === v.id);
+
+      if (i >= 0) {
+        items[i] = v;
+      } else {
+        items.push(v);
+      }
+
+      reset();
+      draw();
+    };
+
+
+    // Reset form
+    $("reset").onclick = reset;
+
+
+    // Export JSON
+    $("export").onclick = () => {
+      const a = document.createElement("a");
+
+      const blob = new Blob(
+        [JSON.stringify(items, null, 2)],
+        { type: "application/json" }
+      );
+
+      a.href = URL.createObjectURL(blob);
+      a.download = "videos.json";
+      a.click();
+
+      URL.revokeObjectURL(a.href);
+    };
+
+
+    // Import JSON
+    $("import").onclick = () => $("file").click();
+
+
+    $("file").onchange = async e => {
+      try {
+        items = JSON.parse(
+          await e.target.files[0].text()
+        );
+
+        draw();
+
+      } catch {
+        alert("Invalid JSON file");
+      }
+    };
+
+
+    // Load existing videos.json
+    fetch("./videos.json")
+      .then(r => r.json())
+      .then(d => {
+        items = d;
+        draw();
+      })
+      .catch(() => draw());
+
+  </script>
+
+</body>
+</html>
